@@ -1,0 +1,9 @@
+OUTPUT_DIR : 'out'
+FIGURES_DIR: 'out/figures'
+DATASET_DIR: 'data/dataset'
+METRICS_DIR: 'data/metrics'
+MODELS_DIR: 'models'
+
+INFERENCE_MODEL: 'xception-occupancy'
+
+DEBUG: false

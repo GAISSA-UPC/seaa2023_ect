@@ -1,0 +1,7 @@
+MLFLOW_ENABLED: false
+INITIAL_EPOCHS: 10
+FT_EPOCHS: 140
+REPETITIONS: 30
+WARMUP_TIME: 10
+COOLDOWN: 5 # In minutes
+COOLDOWN_EVERY: 1 # Number of experiments between cooldowns
