@@ -1,5 +1,5 @@
-# Chess Piece Classifier
-Python package to train multiple Deep Learning (DL) classifiers for chess pieces.
+# seaa2023_ect
+Replication package for the paper "Do DL models and training environments have an impact on the energy consumption?".
 
 ## Set up the environment
 ### Installing dependencies
