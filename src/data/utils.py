@@ -1,5 +1,4 @@
 import logging
-from typing import Tuple
 
 import tensorflow as tf
 
@@ -30,7 +29,6 @@ def _load_data(data_folder):
         image_size=IMAGE_SIZE,
         batch_size=None,
         label_mode="binary",
-        class_names=["empty", "occupied"],
     )
     val_ds = tf.keras.utils.image_dataset_from_directory(
         data_folder,
@@ -41,7 +39,6 @@ def _load_data(data_folder):
         image_size=IMAGE_SIZE,
         batch_size=None,
         label_mode="binary",
-        class_names=["empty", "occupied"],
     )
     return train_ds, val_ds
 
@@ -68,28 +65,6 @@ def load_image(path):
     img = tf.io.read_file(path)
     img = tf.image.decode_png(img, channels=3)
     return img
-
-
-def _load_occupancy_data(data_folder: str) -> Tuple:
-    """
-    Load the occupancy dataset.
-
-    Parameters
-    ----------
-    data_folder : str
-        The path to the data folder containing the datasets.
-
-    Returns
-    -------
-    Tuple
-        The training and validation splits.
-
-    """
-    ds = _load_occupancy_images(data_folder)
-    val_size = ds.cardinality().numpy() * TEST_SPLIT
-    train_ds = ds.skip(val_size)
-    val_ds = ds.take(val_size)
-    return train_ds, val_ds
 
 
 def resize_and_rescale(image):

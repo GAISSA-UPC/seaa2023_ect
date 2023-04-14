@@ -66,7 +66,7 @@ def configure_optimizer(
         raise NotImplementedError(f"Configuration for {optimizer} optimizer is not implemented.")
 
 
-def create_model(architecture: str, weights: str = None) -> Tuple[tf.keras.models.Model, tf.keras.models.Model]:
+def create_model(architecture: str, weights: str = "imagenet") -> Tuple[tf.keras.models.Model, tf.keras.models.Model]:
     """
     Creates a ``tensorflow.keras.models.Model`` with the given architecture as the base model.
 
@@ -74,9 +74,8 @@ def create_model(architecture: str, weights: str = None) -> Tuple[tf.keras.model
     ----------
     architecture : str
         The base architecture for the model.
-    weights : str, default None
-        The weights to use for the pretrained model. If None it defaults to chess pretrained weights if available or
-        ImageNet if not.
+    weights : str, default "imagenet"
+        The weights to use for the pretrained model.
 
     Returns
     -------
@@ -87,24 +86,14 @@ def create_model(architecture: str, weights: str = None) -> Tuple[tf.keras.model
     """
     optimizer = configure_optimizer(OPTIMIZER, LEARNING_RATE, MOMENTUM)
     if architecture == "vgg16":
-        if weights is None:
-            weights = "imagenet"
         return create_VGG16(optimizer, weights)
     elif architecture == "resnet50":
-        if weights is None:
-            weights = "imagenet"
         return create_ResNet50(optimizer, weights)
     elif architecture == "xception":
-        if weights is None:
-            weights = os.path.join(PRETRAINED_MODELS_DIR, "Xception_no_top_weights.h5")
         return create_Xception(optimizer, weights)
     elif architecture == "mobilenet_v2":
-        if weights is None:
-            weights = os.path.join(PRETRAINED_MODELS_DIR, "MobileNetV2_no_top_weights.h5")
         return create_MobileNetV2(optimizer, weights)
     elif architecture == "nasnet_mobile":
-        if weights is None:
-            weights = os.path.join(PRETRAINED_MODELS_DIR, "NASNetMobile_no_top_weights.h5")
         return create_NASNetMobile(optimizer, weights)
     else:
         raise NotImplementedError("Unknown architecture type.")

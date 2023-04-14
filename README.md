@@ -38,10 +38,6 @@ The GPU memory limit must be specified in Megabytes. If you do not want to set a
 
 __WARNING! The memory limit value is just an example. Do not take it as a reference.__
 
-### Get the pre-trained models
-You can download the three pre-trained models used to train MobileNet V2, NASNet Mobile and Xception from the [releases](https://github.com/santidrj/seaa2023_ect/releases).
-Once downloaded, you need to place them under the root of the project inside a `models` folder to allow the training scripts to find them.
-
 ## Running the experiment
 Once the environment is set up, you can run the experiment by executing the following command:
 
@@ -54,7 +50,7 @@ positional arguments:
 options:
   --experiment_name EXPERIMENT_NAME
                         The name of the MLflow experiment.
-  -d DATA, --data DATA  Path to the dataset folder.
+  -d DATA, --data DATA  Path to the dataset folder. The default is the data/dataset folder.
 ```
 
 The raw measurements for each architecture will be saved in the `data/metrics/raw/{local, cloud}/architecture_name` folder.
@@ -74,10 +70,14 @@ positional arguments:
 options:
   --experiment_name EXPERIMENT_NAME
                         The name of the MLflow experiment.
-  -d DATA, --data DATA  Path to the dataset folder
+  -d DATA, --data DATA  Path to the dataset folder. The default is the data/dataset folder.
 ```
 
 The training history and the model will be saved following the same rules as the profiling script.
+
+### Training data
+We do not share the training data used in this experiment. However, you can use any dataset you want, as long as it is
+intended for binary image classification, and obtain the energy measurements for it.
 
 ## Collected data
 All the data collected during the experiment can be found in the [data/metrics](data/metrics) folder. The data is organized in the following structure:
