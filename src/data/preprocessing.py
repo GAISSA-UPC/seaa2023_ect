@@ -11,13 +11,20 @@ from src.environment import METRICS_DIR
 POWER_MEASUREMENT_ERROR = 5
 
 WATTS_TO_KWATTS = 1e-3
+
+JOULES_TO_MJOULES = 1e-6
 JOULES_TO_GJOULES = 1e-9
+JOULES_TO_KWH = 1 / 3.6e6
+
+MJOULES_TO_JOULES = 1e6
+MJOULES_TO_KJOULES = 1e3
+
 GJOULES_TO_JOULES = 1e9
 GJOULES_TO_KJOULES = 1e6
 GJOULES_TO_MJOULES = 1e3
-JOULES_TO_KWH = 1 / 3.6e6
+
 KWH_CO2e_SPA = 232
-GCO2e_TO_TCO2e = 1e-6
+gCO2e_TO_TCO2e = 1e-6
 FLOPS_TO_GFLOPS = 1e-9
 
 HOURS_TO_SECONDS = 3.6e3
@@ -188,7 +195,7 @@ def _get_mlflow_metrics(df, grouping_features, output_folder):
     mlflow_experiments = []
     for train_environment, architecture in df[["train_environment", "architecture"]].drop_duplicates().values:
         mlflow_runs = mlflow.search_runs(
-            experiment_names=[f"ChessLive-{train_environment}-occupancy-{architecture}"], order_by=["start_time ASC"]
+            experiment_names=[f"{train_environment}-chesslive-occupancy-{architecture}"], order_by=["start_time ASC"]
         )
 
         # Select relevant metrics
@@ -261,7 +268,7 @@ def _get_mlflow_metrics(df, grouping_features, output_folder):
     mlflow_df = pd.concat(mlflow_experiments, axis=0)
     mlflow_df = mlflow_df.set_index(grouping_features)
     if output_folder is not None:
-        out_folder = os.path.join(METRICS_DIR, "raw", "occupancy", "interim")
+        out_folder = os.path.join(METRICS_DIR, "raw", "interim")
         os.makedirs(out_folder, exist_ok=True)
         out_file = os.path.join(out_folder, "model_metrics.gzip")
         mlflow_df.to_parquet(out_file, compression="gzip")
@@ -285,8 +292,11 @@ def _aggregate_metrics(df, grouping_features):
         temperature_avg=("gpu_temperature", np.mean),
         temperature_std=("gpu_temperature", np.std),
     )
-    df_grouped["energy (GJ)"] = df_grouped.W * (df_grouped.hours_training * HOURS_TO_SECONDS) * JOULES_TO_GJOULES
-    df_grouped["emissions (tCO2e)"] = (df_grouped.W * df_grouped.hours_training / 1000) * KWH_CO2e_SPA * GCO2e_TO_TCO2e
+    df_grouped["energy (MJ)"] = df.groupby(grouping_features).apply(
+        lambda d: np.trapz(y=d.gpu_power_draw, dx=np.diff(d.timestamp) / np.timedelta64(1, "s")) * JOULES_TO_MJOULES
+    )
+    # df_grouped["energy (GJ)"] = df_grouped.W * (df_grouped.hours_training * HOURS_TO_SECONDS) * JOULES_TO_GJOULES
+    df_grouped["emissions (gCO2e)"] = df_grouped["energy (MJ)"] * MJOULES_TO_JOULES * JOULES_TO_KWH * KWH_CO2e_SPA
 
     df_grouped.rename(
         columns={
