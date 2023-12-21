@@ -242,10 +242,7 @@ def _get_mlflow_metrics(df, grouping_features, output_folder):
         relevant_metrics["split number"] = relevant_metrics["split number"].astype(int)
 
         # Compute new metrics
-        relevant_metrics["trained epochs"] = mlflow_runs["metrics.restored_epoch_ft"].astype(int) + mlflow_runs[
-            "params.earlystopping_patience_ft"
-        ].astype(int)
-
+        relevant_metrics["trained epochs"] = _get_number_of_trained_epochs(mlflow_runs)
         training_size = relevant_metrics["training size"]
         validation_size = relevant_metrics["validation size"]
         batch_size = relevant_metrics["batch size"]
@@ -273,6 +270,37 @@ def _get_mlflow_metrics(df, grouping_features, output_folder):
         out_file = os.path.join(out_folder, "model_metrics.gzip")
         mlflow_df.to_parquet(out_file, compression="gzip")
     return mlflow_df
+
+
+def _get_number_of_trained_epochs(mlflow_runs):
+    epochs_cl = mlflow_runs.get("params.epochs_cl", pd.Series(np.zeros(mlflow_runs.shape[0])))
+    epochs_cl = epochs_cl.fillna(0).astype(int)
+
+    if "metrics.restored_epoch" in mlflow_runs.columns:
+        restored_epochs = mlflow_runs["metrics.restored_epoch"]
+        restored_epochs = restored_epochs.fillna(0).astype(int)
+        early_stopping_patience = mlflow_runs.get("params.earlystopping_patience", pd.Series(np.zeros(mlflow_runs.shape[0])))
+        early_stopping_patience = early_stopping_patience.fillna(0).astype(int)
+
+        trained_epochs_cl = (restored_epochs + early_stopping_patience).clip(upper=epochs_cl)
+    else:
+        trained_epochs_cl = epochs_cl
+
+            
+    epochs_ft = mlflow_runs.get("params.epochs_ft", pd.Series(np.zeros(mlflow_runs.shape[0])))
+    epochs_ft = epochs_ft.fillna(0).astype(int)
+    if "metrics.restored_epoch_ft" in mlflow_runs.columns:
+        restored_epochs_ft = mlflow_runs["metrics.restored_epoch_ft"]
+        restored_epochs_ft = restored_epochs_ft.fillna(0).astype(int)
+        early_stopping_patience_ft = mlflow_runs.get("params.earlystopping_patience_ft", pd.Series(np.zeros(mlflow_runs.shape[0])))
+        early_stopping_patience_ft = early_stopping_patience_ft.fillna(0).astype(int)
+
+        trained_epochs_ft = (restored_epochs_ft + early_stopping_patience_ft).clip(upper=epochs_ft)
+    else:
+        trained_epochs_ft = epochs_ft
+            
+    trained_epochs = trained_epochs_cl + trained_epochs_ft
+    return trained_epochs
 
 
 def _aggregate_metrics(df, grouping_features):
