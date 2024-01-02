@@ -70,7 +70,7 @@ def is_pareto_efficient(costs, return_mask=True):
     next_point_index = 0  # Next index in the is_efficient array to search for
     while next_point_index < len(costs):
         nondominated_point_mask = (costs[:, 0] <= costs[next_point_index, 0]) | (
-            costs[:, 1] >= costs[next_point_index, 1]
+                costs[:, 1] >= costs[next_point_index, 1]
         )
         nondominated_point_mask[next_point_index] = True
         is_efficient = is_efficient[nondominated_point_mask]  # Remove dominated points
@@ -85,14 +85,14 @@ def is_pareto_efficient(costs, return_mask=True):
 
 
 def boxplot(
-    data,
-    x: str = None,
-    y: str = None,
-    title=None,
-    xlabel=None,
-    ylabel=None,
-    figname=None,
-    figsize=(5, 5),
+        data,
+        x: str = None,
+        y: str = None,
+        title=None,
+        xlabel=None,
+        ylabel=None,
+        figname=None,
+        figsize=(5, 5),
 ):
     fig = plt.figure(figsize=figsize)
     ax = fig.add_subplot(111)
@@ -106,20 +106,20 @@ def boxplot(
 
 
 def barplot(
-    data,
-    x=None,
-    y=None,
-    xlabel=None,
-    ylabel=None,
-    title=None,
-    hue=None,
-    hue_order=None,
-    errorbar=None,
-    estimator="mean",
-    figname=None,
-    figsize=(5, 5),
-    barlabel=False,
-    ax=None,
+        data,
+        x=None,
+        y=None,
+        xlabel=None,
+        ylabel=None,
+        title=None,
+        hue=None,
+        hue_order=None,
+        errorbar=None,
+        estimator="mean",
+        figname=None,
+        figsize=(5, 5),
+        barlabel=False,
+        ax=None,
 ):
     if barlabel and errorbar is not None:
         raise Warning(
