@@ -1,7 +1,7 @@
 # seaa2023_ect
 Replication package for the paper "Do DL models and training environments have an impact on the energy consumption?".
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7828519.svg)](https://doi.org/10.5281/zenodo.7828519)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10455716.svg)](https://doi.org/10.5281/zenodo.10455716)
 
 ## Set up the environment
 ### Installing dependencies
