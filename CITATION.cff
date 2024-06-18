@@ -1,0 +1,31 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Do DL models and training environments have an impact on
+  the energy consumption? — Replication package
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Santiago
+    family-names: del Rey
+    email: santiago.del.rey@upc.edu
+    affiliation: Universitat Politècnica de Catalunya
+    orcid: 'https://orcid.org/0000-0003-4979-414X'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.7828518
+repository-code: >-
+  https://github.com/GAISSA-UPC/seaa2023_ect
+keywords:
+  - Green AI
+  - energy efficiency
+  - neural networks
+  - software engineering
+  - sustainable computing
+license: Apache-2.0
+version: v0.1.1
+date-released: '2024-01-03'
