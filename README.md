@@ -1,7 +1,12 @@
 # seaa2023_ect
-Replication package for the paper "Do DL models and training environments have an impact on the energy consumption?".
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10455716.svg)](https://doi.org/10.5281/zenodo.10455716)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10455716.svg)](https://doi.org/10.5281/zenodo.7828518)
+
+Replication package for the paper:
+
+S. del Rey, S. Martínez-Fernández, L. Cruz and X. Franch, "Do DL models and training environments have an impact on energy consumption?," *2023 49th Euromicro Conference on Software Engineering and Advanced Applications (SEAA)*, Durres, Albania, 2023, pp. 150-158, doi: [10.1109/SEAA60479.2023.00031](https://doi.org/10.1109/SEAA60479.2023.00031).
+
+
 
 ## Set up the environment
 ### Installing dependencies
